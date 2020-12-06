@@ -21,35 +21,43 @@ defmodule ElixirCowboy.Application do
   end
 
   defmodule PageHandler do
+    alias Toy.Conn
+
     def init(req, state) do
-      path = :cowboy_req.path(req)
+      conn =
+        %Conn{req_path: :cowboy_req.path(req)}
+        |> content_for()
+
       resp =
         :cowboy_req.reply(
-          200,
-          %{"content-type" => "text/html"},
-          content_for(path),
+          conn.resp_code,
+          conn.resp_header,
+          conn.resp_body,
           req
         )
 
       {:ok, resp, state}
     end
 
-    defp content_for("/") do
-      "Hello Erlang!"
-    end
-  
-    defp content_for("/about") do
-      """
-      <h1>About Erlang</h1>
-      <p>Erlang is amazing</P>
-      """
+    defp content_for(%Conn{req_path: "/"} = conn) do
+      Conn.put_resp_body(conn, "Hello Erlang!")
     end
 
-    defp content_for(_) do
-      """
+    defp content_for(%Conn{req_path: "/about"} = conn) do
+      conn
+      |> Conn.put_resp_body("""
+      <h1>About Erlang</h1>
+      <p>Erlang is amazing</P>
+      """)
+    end
+
+    defp content_for(conn) do
+      conn
+      |> Conn.put_resp_code(404)
+      |> Conn.put_resp_body("""
       <h1>Page not found</h1>
       <p>Error 404, page not found</p>
-      """
+      """)
     end
   end
 
