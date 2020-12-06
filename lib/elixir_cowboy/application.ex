@@ -7,6 +7,8 @@ defmodule ElixirCowboy.Application do
 
   @impl true
   def start(_type, _args) do
+    start_cowboy()
+
     children = [
       # Starts a worker by calling: ElixirCowboy.Worker.start_link(arg)
       # {ElixirCowboy.Worker, arg}
@@ -16,5 +18,34 @@ defmodule ElixirCowboy.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: ElixirCowboy.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  defmodule PageHandler do
+    def init(req, state) do
+      resp =
+        :cowboy_req.reply(
+          200,
+          %{"content-type" => "text/plain"},
+          "Hello Erlang!",
+          req
+        )
+
+      {:ok, resp, state}
+    end
+  end
+  
+  def start_cowboy() do
+    dispatch =
+      :cowboy_router.compile([
+        {:_, [{:_, PageHandler, []}]}
+      ])
+
+    case :cowboy.start_clear(:http, [port: 8080], %{env: %{dispatch: dispatch}}) do
+      {:ok, pid} ->
+        IO.puts("Cowboy is running at http://localhost:8080")
+
+      _ ->
+        IO.puts("An error occured when starting cowboy")
+    end
   end
 end
