@@ -22,18 +22,37 @@ defmodule ElixirCowboy.Application do
 
   defmodule PageHandler do
     def init(req, state) do
+      path = :cowboy_req.path(req)
       resp =
         :cowboy_req.reply(
           200,
-          %{"content-type" => "text/plain"},
-          "Hello Erlang!",
+          %{"content-type" => "text/html"},
+          content_for(path),
           req
         )
 
       {:ok, resp, state}
     end
-  end
+
+    defp content_for("/") do
+      "Hello Erlang!"
+    end
   
+    defp content_for("/about") do
+      """
+      <h1>About Erlang</h1>
+      <p>Erlang is amazing</P>
+      """
+    end
+
+    defp content_for(_) do
+      """
+      <h1>Page not found</h1>
+      <p>Error 404, page not found</p>
+      """
+    end
+  end
+
   def start_cowboy() do
     dispatch =
       :cowboy_router.compile([
