@@ -1,9 +1,7 @@
 defmodule ElixirCowboy.PageController do
-  alias Toy.Conn
+  use Toy.Controller
 
-  def call(conn, action) do
-    apply(__MODULE__, action, [conn, %{}])
-  end
+  alias Toy.Conn
 
   def home(conn, _params) do
     Conn.put_resp_body(conn, "Hello Erlang!")
