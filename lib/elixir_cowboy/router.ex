@@ -1,20 +1,18 @@
 defmodule ElixirCowboy.Router do
   alias Toy.Conn
+  alias ElixirCowboy.PageController
+
 
   def call(conn) do
     content_for(conn, conn.req_path)
   end
 
   defp content_for(conn, "/") do
-    Conn.put_resp_body(conn, "Hello Erlang!")
+    PageController.call(conn, :home)
   end
 
   defp content_for(conn, "/about") do
-    conn
-    |> Conn.put_resp_body("""
-    <h1>About Erlang</h1>
-    <p>Erlang is amazing</P>
-    """)
+    PageController.call(conn, :about)
   end
 
   defp content_for(conn, _) do
