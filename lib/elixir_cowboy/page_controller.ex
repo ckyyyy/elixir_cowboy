@@ -8,10 +8,10 @@ defmodule ElixirCowboy.PageController do
   end
 
   def about(conn, _params) do
-  conn
-  |> Conn.put_resp_body("""
-  <h1>About Erlang</h1>
-  <p>Erlang is amazing</P>
-  """)
+    conn
+    |> Conn.put_resp_body("""
+    <h1>About Erlang</h1>
+    <p>Erlang is amazing</P>
+    """)
   end
 end

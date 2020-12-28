@@ -19,12 +19,12 @@ defmodule ElixirCowboy.Application do
     opts = [strategy: :one_for_one, name: ElixirCowboy.Supervisor]
     Supervisor.start_link(children, opts)
   end
-  
+
   def start_cowboy() do
     dispatch =
-    :cowboy_router.compile([
-      {:_, [{:_, Toy.CowboyHandler, ElixirCowboy.Router}]}
-    ])
+      :cowboy_router.compile([
+        {:_, [{:_, Toy.CowboyHandler, ElixirCowboy.Router}]}
+      ])
 
     case :cowboy.start_clear(:http, [port: 8080], %{env: %{dispatch: dispatch}}) do
       {:ok, pid} ->
