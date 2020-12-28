@@ -4,13 +4,8 @@ defmodule ElixirCowboy.Router do
   alias Toy.Conn
   alias ElixirCowboy.PageController
 
-  def content_for(conn, "/") do
-    PageController.call(conn, :home)
-  end
-
-  def content_for(conn, "/about") do
-    PageController.call(conn, :about)
-  end
+  get "/", PageController, :home
+  get "/about", PageController, :about
 
   def content_for(conn, _) do
     conn
