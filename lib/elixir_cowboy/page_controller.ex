@@ -4,7 +4,7 @@ defmodule ElixirCowboy.PageController do
   alias Toy.Conn
 
   def home(conn, _params) do
-    render(conn, "home.html", message: "Hello World")
+    render(conn, "home.html", message: "Hello Erlang!")
   end
 
   def about(conn, _params) do

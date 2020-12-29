@@ -1,8 +1,8 @@
 defmodule ElixirCowboy.PageView do
-  def redner("home.html", assigns) do
+  def render("home.html", assigns) do
     template = """
-      <h1> Welcome </h1>
-      <%= message %>
+    <h1>Welcome</h1>
+    <p><%= message %></p>
     """
 
     EEx.eval_string(template, assigns)
