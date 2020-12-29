@@ -16,10 +16,10 @@ defmodule Toy.Router do
         conn
         |> Toy.Conn.put_resp_code(404)
         |> Toy.Conn.put_resp_body("""
-          <h1>Page not found</h1>
-          <p>Error 404, page not found</p>
-          """)
-      end 
+        <h1>Page not found</h1>
+        <p>Error 404, page not found</p>
+        """)
+      end
     end
   end
 

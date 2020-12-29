@@ -4,14 +4,15 @@ defmodule ElixirCowboy.PageController do
   alias Toy.Conn
 
   def home(conn, _params) do
-    Conn.put_resp_body(conn, "Hello Erlang!")
+    render(conn, "home.html", message: "Hello World")
   end
 
   def about(conn, _params) do
-    conn
-    |> Conn.put_resp_body("""
-    <h1>About Erlang</h1>
-    <p>Erlang is amazing</P>
-    """)
+    render(conn, "about.html")
+  end
+
+  def render(conn, template_name, assigns \\ []) do
+    body = ElixirCowboy.PageView.render(template_name, assigns)
+    Conn.put_resp_body(conn, body)
   end
 end
