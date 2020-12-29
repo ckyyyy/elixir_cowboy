@@ -10,9 +10,4 @@ defmodule ElixirCowboy.PageController do
   def about(conn, _params) do
     render(conn, "about.html")
   end
-
-  def render(conn, template_name, assigns \\ []) do
-    body = ElixirCowboy.PageView.render(template_name, assigns)
-    Conn.put_resp_body(conn, body)
-  end
 end
